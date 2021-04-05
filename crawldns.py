@@ -50,3 +50,14 @@ def SaveSubDomainToDb(result):
 		cursor.execute("INSERT INTO SubDomain VALUES(datetime('now'), ?, ?)", (result['Domain'], result['Links']))
 		cursor.commit()
 	cursor.close()
+
+def GetSubdomainStatistic(cursor):
+     res = cursor.execute("SELECT COUNT(DISTINCT UPPER(Domain)) FROM SubDomain")
+     for row in res.fetchall():
+         print('\n[+] In total {0} unique subdomains were retrieved.'.format(row[0]))
+
+def GetSubdomains(cursor):
+     res = cursor.execute("SELECT DISTINCT Domain FROM SubDomain")
+     for row in res.fetchall():
+         print('Subdomain found: {0}'.format(row[0]))
+
