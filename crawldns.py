@@ -96,3 +96,14 @@ def GetIndexFile():
 	for proc in threads:
 		proc.get()
 
+def main():
+    CreatePentestDb()
+    cursor = DbConnect()
+    GetIndexFile()
+    GetSubdomainStatistic(cusor)
+    GetSubdomains(cursor)
+
+if __name__ == '__main__':
+    main()
+    
+
