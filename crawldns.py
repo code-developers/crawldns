@@ -22,4 +22,6 @@ FileExt = options.FileExt
 if Target is None:
     sys.exit('Mandatory option -d missing..\nExiting..')
 
-
+def DbConnect():
+    cursor = sqlite3.connect('./Result.db')
+    return cursor
