@@ -25,3 +25,28 @@ if Target is None:
 def DbConnect():
     cursor = sqlite3.connect('./Result.db')
     return cursor
+
+def CreatePentestDb():
+    if os.path.exists('./Results.db'):
+        cursor = DbConnect()
+        cursor.execute('DROP TABLE SubDomain')
+        cursor.commit()
+        cursor.close()
+    if not os.path.exists('./Results.db'):
+        cursor = DbConnect()
+        cursor.execute('CREATE TABLE SubDomain (timestamp TEXT, Domain TEXT, Links Text)')
+        cursor.commit()
+        cursor.close()
+
+def SaveSubDomainToDb(result):
+    	for k in [ 'timestamp', 'Domain', 'Links']:
+		if not k in result:
+			result[k] = ''
+	cursor = DbConnect()
+	cursor.text_factory = sqlite3.Binary
+	res = cursor.execute("SELECT COUNT(*) AS count FROM SubDomain WHERE Domain=? AND Links=?", (result['Domain'], result['Links']))
+	(count,) = res.fetchone()
+	if not count:
+		cursor.execute("INSERT INTO SubDomain VALUES(datetime('now'), ?, ?)", (result['Domain'], result['Links']))
+		cursor.commit()
+	cursor.close()
